@@ -1,166 +1,36 @@
-# Helidon Quickstart MP
+# Helidon for Platform.sh
 
-Sample Helidon MP project that includes multiple REST operations.
+<p align="center">
+<a href="https://console.platform.sh/projects/create-project?template=https://raw.githubusercontent.com/platformsh/template-builder/master/templates/microprofile-helidon/.platform.template.yaml&utm_content=microprofile-helidon&utm_source=github&utm_medium=button&utm_campaign=deploy_on_platform">
+    <img src="https://platform.sh/images/deploy/lg-blue.svg" alt="Deploy on Platform.sh" width="180px" />
+</a>
+</p>
 
-## Build and run
+This project provides a starter kit for Helidon Eclipse MicroProfile projects hosted on Platform.sh.  It includes a minimalist application skeleton that is intended for you to use as a starting point and modify for your own needs, along with the Platform.sh Config Reader to simplify accessing Platform.sh environment variables.
 
-With JDK11+
-```bash
-mvn package
-java -jar target/helidon-quickstart-mp.jar
-```
+Helidon is a collection of Java libraries for writing microservices that run on a fast web core powered by Netty.
 
-## Exercise the application
+Helidon is designed to be simple to use, with tooling and examples to get you going quickly. Since Helidon is just a collection of libraries running on a fast Netty core, there is no extra overhead or bloat.
 
-```
-curl -X GET http://localhost:8080/greet
-{"message":"Hello World!"}
+## Features
 
-curl -X GET http://localhost:8080/greet/Joe
-{"message":"Hello Joe!"}
+* Java 8
+* Automatic TLS certificates
+* Maven-based build
 
-curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
+## Customizations
 
-curl -X GET http://localhost:8080/greet/Jose
-{"message":"Hola Jose!"}
-```
+The following files and additions make the framework work.  If using this project as a reference for your own existing project, replicate the changes below to your project.
 
-## Try health and metrics
+* [`.platform/routes.yaml`](.platform/routes.yaml): Platform.sh allows you to define the [routes](https://docs.platform.sh/configuration/routes.html).
+* [`.platform/services.yaml`](.platform/services.yaml):  Platform.sh allows you to completely define and configure the topology and [services you want to use on your project](https://docs.platform.sh/configuration/services.html).
+* [`.platform.app.yaml`](.platform.app.yaml): You control your application and the way it will be built and deployed on Platform.sh [via a single configuration file](https://docs.platform.sh/configuration/app-containers.html).
+* An additional library dependency, [`platformsh/config-reader-java`](https://github.com/platformsh/config-reader-java), has been added.  It provides convenience wrappers for accessing the Platform.sh environment variables.
 
-```
-curl -s -X GET http://localhost:8080/health
-{"outcome":"UP",...
-. . .
+## References
 
-# Prometheus Format
-curl -s -X GET http://localhost:8080/metrics
-# TYPE base:gc_g1_young_generation_count gauge
-. . .
-
-# JSON Format
-curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
-{"base":...
-. . .
-
-```
-
-## Build the Docker Image
-
-```
-docker build -t helidon-quickstart-mp .
-```
-
-## Start the application with Docker
-
-```
-docker run --rm -p 8080:8080 helidon-quickstart-mp:latest
-```
-
-Exercise the application as described above
-
-## Deploy the application to Kubernetes
-
-```
-kubectl cluster-info                         # Verify which cluster
-kubectl get pods                             # Verify connectivity to cluster
-kubectl create -f app.yaml                   # Deploy application
-kubectl get service helidon-quickstart-mp    # Verify deployed service
-```
-
-## Build a native image with GraalVM
-
-GraalVM allows you to compile your programs ahead-of-time into a native
- executable. See https://www.graalvm.org/docs/reference-manual/aot-compilation/
- for more information.
-
-You can build a native executable in 2 different ways:
-* With a local installation of GraalVM
-* Using Docker
-
-### Local build
-
-Download Graal VM at https://www.graalvm.org/downloads, the version
- currently supported for Helidon is `20.1.0`.
-
-```
-# Setup the environment
-export GRAALVM_HOME=/path
-# build the native executable
-mvn package -Pnative-image
-```
-
-You can also put the Graal VM `bin` directory in your PATH, or pass
- `-DgraalVMHome=/path` to the Maven command.
-
-See https://github.com/oracle/helidon-build-tools/tree/master/helidon-maven-plugin#goal-native-image
- for more information.
-
-Start the application:
-
-```
-./target/helidon-quickstart-mp
-```
-
-### Multi-stage Docker build
-
-Build the "native" Docker Image
-
-```
-docker build -t helidon-quickstart-mp-native -f Dockerfile.native .
-```
-
-Start the application:
-
-```
-docker run --rm -p 8080:8080 helidon-quickstart-mp-native:latest
-```
-
-
-## Build a Java Runtime Image using jlink
-
-You can build a custom Java Runtime Image (JRI) containing the application jars and the JDK modules 
-on which they depend. This image also:
-
-* Enables Class Data Sharing by default to reduce startup time. 
-* Contains a customized `start` script to simplify CDS usage and support debug and test modes. 
- 
-You can build a custom JRI in two different ways:
-* Local
-* Using Docker
-
-
-### Local build
-
-```
-# build the JRI
-mvn package -Pjlink-image
-```
-
-See https://github.com/oracle/helidon-build-tools/tree/master/helidon-maven-plugin#goal-jlink-image
- for more information.
-
-Start the application:
-
-```
-./target/helidon-quickstart-mp/bin/start
-```
-
-### Multi-stage Docker build
-
-Build the "jlink" Docker Image
-
-```
-docker build -t helidon-quickstart-mp-jlink -f Dockerfile.jlink .
-```
-
-Start the application:
-
-```
-docker run --rm -p 8080:8080 helidon-quickstart-mp-jlink:latest
-```
-
-See the start script help:
-
-```
-docker run --rm helidon-quickstart-mp-jlink:latest --help
-```
+* [Platform.sh post](https://platform.sh/blog/2019/java-hello-world-at-platform.sh/)
+* [Maven](https://maven.apache.org/)
+* [Helidon](https://helidon.io/)
+* [Eclipse MicroProfile](https://microprofile.io/)
+* [Java at Platform.sh](https://docs.platform.sh/languages/java.html)
