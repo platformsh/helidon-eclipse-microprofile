@@ -7,4 +7,4 @@ relationships:
   mongodb: 'mongodb:mongodb'
 web:
   commands:
-    start: java -jar $JAVA_OPTS $CREDENTIAL -Dserver.port=$PORT target/microprofile-helidon.jar
+    start: java -jar $JAVA_OPTS $CREDENTIAL -Dserver.port=$PORT target/deploy-friday-ep15.jar
