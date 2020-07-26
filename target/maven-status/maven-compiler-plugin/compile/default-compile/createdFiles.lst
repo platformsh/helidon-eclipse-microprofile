@@ -1,9 +1,0 @@
-sh/platform/examples/deployfriday/FieldVisibility.class
-sh/platform/examples/deployfriday/HelloWorldResource.class
-sh/platform/examples/deployfriday/Guest.class
-sh/platform/examples/deployfriday/EpisodeAPI.class
-sh/platform/examples/deployfriday/Episode.class
-sh/platform/examples/deployfriday/DocumentManager.class
-sh/platform/examples/deployfriday/EpisodeResource.class
-sh/platform/examples/deployfriday/Episodes.class
-sh/platform/examples/deployfriday/EpisodeRepository.class
